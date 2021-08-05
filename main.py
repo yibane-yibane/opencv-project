@@ -2,7 +2,7 @@ import os
 from utils import csv_utils, video_utils
 
 
-if __name__=='__main__':
+if __name__ == '__main__':
     csv_utils.split_csv_to_multiple_csv_files(os.environ.get('CSV_FILE_PATH'),
                                               os.environ.get('OUTPUT_CSV_DIR_PATH'),
                                               'video_id')
