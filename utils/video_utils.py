@@ -24,13 +24,13 @@ def show_tagged_differences_in_frames(images_directory_path: str, tagged_csv_pat
 
     for frame_index, filename in enumerate(os.listdir(images_directory_path)):
         image = cv2.imread(os.path.join(images_directory_path, filename))
-        tagged_image = metadata_arrays.loc[metadata_arrays["frame_id"] == frame_index]
-        model_tag_image = metadata_arrays_new.loc[metadata_arrays_new["frame_id"] == frame_index]
+        image_detections = metadata_arrays.loc[metadata_arrays["frame_id"] == frame_index]
+        image_model_detections = metadata_arrays_new.loc[metadata_arrays_new["frame_id"] == frame_index]
 
-        tagged_img = get_tagged_image(tagged_image, image)
-        model_img = get_tagged_image(model_tag_image, image)
+        tagged_image = get_tagged_image(image_detections, image)
+        tagged_model_image = get_tagged_image(image_model_detections, image)
 
-        img_concatenated = np.concatenate([tagged_img, model_img], axis=1)
+        img_concatenated = np.concatenate([tagged_image, tagged_model_image], axis=1)
 
         cv2.imshow('Tagged frames', img_concatenated)
         cv2.waitKey(delay=1)
