@@ -3,8 +3,9 @@ import pandas as pd
 import numpy as np
 import cv2
 import os
-from copy import deepcopy
 import ast
+from copy import deepcopy
+
 
 RECTANGLE_COLOR = (0, 0, 0, 0)
 RECTANGLE_THICKNESS = 2
@@ -38,7 +39,7 @@ def show_tagged_differences_in_frames(images_directory_path: str, tagged_csv_pat
         time.sleep(WAITING_TIME_BETWEEN_FRAMES)
 
 
-def get_tagged_image(tags, image):
+def get_tagged_image(tags: pd.DataFrame, image: np.ndarray):
     """
     Get tagged image.
     :param tags: Tags for the image.

@@ -33,14 +33,12 @@ def convert_xls_to_csv(path: str, path_to_save_csv: str):
     for index, xml_file in enumerate(os.listdir(path)):
         xml_parse = Xet.parse(os.path.join(path, xml_file))
         root = xml_parse.getroot()
-
         rows.append(extract_data_from_xml_root(root, video_id, index))
 
-    df = pd.DataFrame(rows)
-    df.to_csv(path_to_save_csv, index=False)
+    pd.DataFrame(rows).to_csv(path_to_save_csv, index=False)
 
 
-def extract_data_from_xml_root(root, video_id, frame_number):
+def extract_data_from_xml_root(root: Xet, video_id: str, frame_number: int):
     """
     Extract data from xml root.
     :param root: The xml root.
@@ -66,7 +64,7 @@ def extract_data_from_xml_root(root, video_id, frame_number):
             "detections": detections}
 
 
-def extract_coordinates_from_xml_root(root):
+def extract_coordinates_from_xml_root(root: Xet):
     """
     Extract coordinates from xml root.
     :param root: The xml root.
@@ -78,7 +76,16 @@ def extract_coordinates_from_xml_root(root):
     ymin = int(root.find('ymin').text)
     ymax = int(root.find('ymax').text)
 
-    return [(xmin + xmax) / 2,
-            (ymin + ymax) / 2,
-            ymax - ymin,
-            xmax - xmin]
+    middleX, distanceX = get_middle_and_distance(xmin, xmax)
+    middleY, distanceY = get_middle_and_distance(ymin, ymax)
+
+    return [middleX,
+            middleY,
+            distanceY,
+            distanceX]
+
+
+def get_middle_and_distance(x: int, y: int):
+    middle = (x + y) / 2
+    distance = x - y
+    return middle, distance
