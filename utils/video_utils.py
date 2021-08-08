@@ -12,19 +12,18 @@ RECTANGLE_COLOR = (0, 0, 0, 0)
 WAITING_TIME_BETWEEN_FRAMES = 0.2
 
 
-def show_tagged_differences_in_frames(images_directory_path: str, tagged_csv_paths_to_compare: list):
+def show_tagged_differences_in_frames(images_directory_path: str, csv_paths_to_compare: list):
     """
     Show tagged differences in frames.
-    :param tagged_csv_paths_to_compare:
+    :param csv_paths_to_compare: csv files paths to compare.
     :param images_directory_path: Images directory path.
     """
 
-    tags_dataframes = [pd.read_csv(tagged_csv_path) for tagged_csv_path in tagged_csv_paths_to_compare]
+    detections_dataframes = [pd.read_csv(csv_path) for csv_path in csv_paths_to_compare]
 
     for frame_index, filename in enumerate(os.listdir(images_directory_path)):
         image = cv2.imread(os.path.join(images_directory_path, filename))
-        tags = [dataframe.loc[dataframe["frame_id"] == frame_index]
-                for dataframe in tags_dataframes]
+        tags = [dataframe.loc[dataframe["frame_id"] == frame_index] for dataframe in detections_dataframes]
         tagged_images_list = [get_tagged_image(image_detections, image) for image_detections in tags]
 
         img_concatenated = np.concatenate(tagged_images_list, axis=1)
