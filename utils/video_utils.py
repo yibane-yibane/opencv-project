@@ -2,6 +2,7 @@ import os
 import cv2
 import ast
 import time
+import glob
 import numpy as np
 import pandas as pd
 from copy import deepcopy
@@ -29,9 +30,7 @@ def show_tagged_differences_in_frames(images_directory_path: str, csv_paths_to_c
         img_concatenated = np.concatenate(tagged_images_list, axis=1)
 
         cv2.imshow('Tagged frames', img_concatenated)
-        cv2.waitKey(delay=1)
-
-        time.sleep(WAITING_TIME_BETWEEN_FRAMES)
+        cv2.waitKey(0)
 
 
 def get_tagged_image(tags: pd.DataFrame, image: np.ndarray) -> np.ndarray:
@@ -54,3 +53,28 @@ def get_tagged_image(tags: pd.DataFrame, image: np.ndarray) -> np.ndarray:
                                RECTANGLE_THICKNESS))
 
     return tagged_image
+
+
+def save_images_from_path_to_video_file(images_dir_path: str, video_dir_path: str):
+    """ Save images to video.
+
+    Args:
+        images_dir_path: Images directory path.
+        video_dir_path: Video directory path to save.
+    """
+
+    img_array = []
+    for filename in glob.glob(os.path.join(images_dir_path, '*.png')):
+        img = cv2.imread(filename)
+        img_array.append(img)
+
+    height, width, layers = img_array[0].shape
+    size = (width, height)
+
+    video_file = \
+        cv2.VideoWriter(os.path.join(video_dir_path, 'original.mp4'), cv2.VideoWriter_fourcc(*'mp4v'), 15, size)
+
+    for image in img_array:
+        video_file.write(image)
+
+    video_file.release()

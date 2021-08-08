@@ -8,6 +8,8 @@ if __name__ == '__main__':
                                               'video_id')
     csv_utils.convert_xml_to_csv(os.environ.get('ANNOTATIONS_PATH'),
                                  os.environ.get('MODEL_DETECTIONS_CSV_PATH'))
+    video_utils.save_images_from_path_to_video_file(os.environ.get('IMAGES_DIR_PATH'),
+                                                    os.environ.get('OUTPUT_CSV_DIR_PATH'))
     video_utils.show_tagged_differences_in_frames(os.environ.get('IMAGES_DIR_PATH'),
                                                   [os.environ.get('TAGGED_CSV_PATH'),
                                                    os.environ.get('MODEL_DETECTIONS_CSV_PATH')])
