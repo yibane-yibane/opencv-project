@@ -12,26 +12,22 @@ RECTANGLE_THICKNESS = 2
 WAITING_TIME_BETWEEN_FRAMES = 0.2
 
 
-def show_tagged_differences_in_frames(images_directory_path: str, tagged_csv_path: str, model_detections_csv_path: str):
+def show_tagged_differences_in_frames(images_directory_path: str, tagged_csv_paths_to_compare: list):
     """
     Show tagged differences in frames.
+    :param tagged_csv_paths_to_compare:
     :param images_directory_path: Images directory path.
-    :param tagged_csv_path: Tagged csv path.
-    :param model_detections_csv_path: Model detections csv path.
     """
 
-    metadata_arrays = pd.read_csv(tagged_csv_path)
-    metadata_arrays_new = pd.read_csv(model_detections_csv_path)
+    metadata_arrays = [pd.read_csv(tagged_csv_path) for tagged_csv_path in tagged_csv_paths_to_compare]
 
     for frame_index, filename in enumerate(os.listdir(images_directory_path)):
         image = cv2.imread(os.path.join(images_directory_path, filename))
-        image_detections = metadata_arrays.loc[metadata_arrays["frame_id"] == frame_index]
-        image_model_detections = metadata_arrays_new.loc[metadata_arrays_new["frame_id"] == frame_index]
+        tags = [metadata_array.loc[metadata_array["frame_id"] == frame_index]
+                for metadata_array in metadata_arrays]
+        tagged_images_list = [get_tagged_image(image_detections, image) for image_detections in tags]
 
-        tagged_image = get_tagged_image(image_detections, image)
-        tagged_model_image = get_tagged_image(image_model_detections, image)
-
-        img_concatenated = np.concatenate([tagged_image, tagged_model_image], axis=1)
+        img_concatenated = np.concatenate(tagged_images_list, axis=1)
 
         cv2.imshow('Tagged frames', img_concatenated)
         cv2.waitKey(delay=1)
