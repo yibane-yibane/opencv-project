@@ -11,6 +11,7 @@ from copy import deepcopy
 RECTANGLE_THICKNESS = 2
 RECTANGLE_COLOR = (0, 0, 0, 0)
 WAITING_TIME_BETWEEN_FRAMES = 0.2
+FPS = 15
 
 
 def show_tagged_differences_in_frames(images_directory_path: str, csv_paths_to_compare: list):
@@ -72,7 +73,7 @@ def save_images_from_path_to_video_file(images_dir_path: str, video_dir_path: st
     size = (width, height)
 
     video_file = \
-        cv2.VideoWriter(os.path.join(video_dir_path, 'original.mp4'), cv2.VideoWriter_fourcc(*'mp4v'), 15, size)
+        cv2.VideoWriter(os.path.join(video_dir_path, 'original.mp4'), cv2.VideoWriter_fourcc(*'mp4v'), FPS, size)
 
     for image in img_array:
         video_file.write(image)
