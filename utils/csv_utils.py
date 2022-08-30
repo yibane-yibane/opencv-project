@@ -3,7 +3,6 @@ import pandas as pd
 import xml.etree.ElementTree as Xet
 from pathlib import Path
 
-
 def split_csv_to_multiple_csv_files(csv_path_to_split: str, target_path: str, column_split_by: str):
     """
     Split csv file to multiple files by specific column.
