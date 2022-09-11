@@ -12,7 +12,6 @@ def split_csv_to_multiple_csv_files(csv_path_to_split: str, target_path: str, co
     :param column_split_by: The column to split by.
     """
 
-  
    
     dataframe = pd.read_csv(csv_path_to_split)
     grouped_dataframes = dict(iter(dataframe.groupby(column_split_by)))
