@@ -17,7 +17,8 @@ def split_csv_to_multiple_csv_files(csv_path_to_split: str, target_path: str, co
     grouped_dataframes = dict(iter(dataframe.groupby(column_split_by)))
 
     for grouped_column, grouped_dataframe in grouped_dataframes.items():
-        file_path_to_save = f'{os.path.join(target_path, os.path.basename(grouped_column).split(".")[0])}.csv'
+        file_path_to_save = f'{os.path.jo
+        in(target_path, os.path.basename(grouped_column).split(".")[0])}.csv'
         grouped_dataframe.to_csv(file_path_to_save, index=False)
 
 
