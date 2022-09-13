@@ -23,7 +23,6 @@ def split_csv_to_multiple_csv_files(csv_path_to_split: str, target_path: str, co
 
 
 
-
 def convert_xml_to_csv(path: str, path_to_save_csv: str):
     """
     Convert xml file to csv file.
